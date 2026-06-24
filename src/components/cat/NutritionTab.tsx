@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
 import type { FoodLog, MedicineLog } from '../../lib/types'
-import { Plus, X, ChevronDown, Utensils, Pill, Archive } from 'lucide-react'
+import { Plus, X, Utensils, Pill, Archive } from 'lucide-react'
 
 // ── Food config ──────────────────────────────────────────────────────────────
 const FOOD_TYPES: Record<FoodLog['type'], { label: string; cls: string }> = {
@@ -289,7 +289,7 @@ function MedicineSection({ catId, userId }: { catId: string; userId: string }) {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className={labelCls}>Tần suất</label>
-              <select className={inputCls} value={form.frequency} onChange={e => setForm(p => ({ ...p, frequency: e.target.value as MedicineLog['frequency'] }))}>
+              <select className={inputCls} value={form.frequency} onChange={e => setForm(p => ({ ...p, frequency: e.target.value as NonNullable<MedicineLog['frequency']> }))}>
                 {(Object.entries(MED_FREQ)).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
               </select>
             </div>
