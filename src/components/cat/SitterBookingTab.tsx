@@ -52,13 +52,13 @@ export default function SitterBookingTab({ catId }: { catId: string }) {
         <p className="text-xs text-[#333]/40 mt-1">Các lần đặt sitter cho bé sẽ hiển thị ở đây</p>
       </div>
       <a
-        href="https://hangkaet.net/#sitter"
+        href="https://hangkaet.net?tab=sitter"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-1.5 text-xs font-black text-[#0E676B] hover:underline"
+        className="inline-flex items-center gap-2 bg-[#0E676B] text-white font-black text-xs px-5 py-2.5 rounded-2xl border-2 border-[#333] shadow-[3px_3px_0px_0px_rgba(51,51,51,1)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all"
       >
-        <ExternalLink className="w-3.5 h-3.5" />
-        Đặt Kæt Sitter ngay
+        <Home className="w-3.5 h-3.5" />
+        Đăng ký trông mèo
       </a>
     </div>
   )
@@ -68,7 +68,7 @@ export default function SitterBookingTab({ catId }: { catId: string }) {
       <div className="flex items-center justify-between">
         <p className="text-xs font-black text-[#333]/50 uppercase tracking-wider">{bookings.length} lần gửi</p>
         <a
-          href="https://hangkaet.net/#sitter"
+          href="https://hangkaet.net?tab=sitter"
           target="_blank"
           rel="noopener noreferrer"
           className="text-[11px] font-black text-[#0E676B] hover:underline flex items-center gap-1"
