@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-brand-teal: #0E676B;
+  --color-brand-pink: #E17272;
+  --color-brand-gold: #F2B94B;
+  --color-brand-charcoal: #333333;
+  --color-brand-offwhite: #FAF7F2;
+  --color-brand-teal-med: #20A39A;
+  --font-sans: "Quicksand", system-ui, -apple-system, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #FAF7F2;
+  color: #333333;
+  margin: 0;
+}
+
+#root { min-height: 100svh; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #FAF7F2; }
+::-webkit-scrollbar-thumb { background: #0E676B; border-radius: 3px; }
