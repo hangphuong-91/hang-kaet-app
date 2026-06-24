@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import type { Cat, Vaccination, WeightLog, MedicalRecord } from '../lib/types'
-import { ArrowLeft, Syringe, Weight, Stethoscope, Heart, AlertCircle } from 'lucide-react'
+import { ArrowLeft, Syringe, Weight, Stethoscope, Heart, AlertCircle, Home } from 'lucide-react'
 import VaccinationTab from '../components/cat/VaccinationTab'
 import WeightTab from '../components/cat/WeightTab'
 import MedicalTab from '../components/cat/MedicalTab'
 import MemoriesTab from '../components/cat/MemoriesTab'
+import SitterBookingTab from '../components/cat/SitterBookingTab'
 
-type Tab = 'overview' | 'vaccine' | 'weight' | 'medical' | 'memories'
+type Tab = 'overview' | 'vaccine' | 'weight' | 'medical' | 'memories' | 'sitter'
 
 export default function CatProfilePage() {
   const { id } = useParams<{ id: string }>()
@@ -54,6 +55,7 @@ export default function CatProfilePage() {
     { id: 'weight', label: 'Cân nặng', icon: <Weight className="w-3.5 h-3.5" /> },
     { id: 'medical', label: 'Bệnh sử', icon: <Stethoscope className="w-3.5 h-3.5" /> },
     { id: 'memories', label: 'Kỷ niệm', icon: <Heart className="w-3.5 h-3.5" /> },
+    { id: 'sitter', label: 'Kæt Sitter', icon: <Home className="w-3.5 h-3.5" /> },
   ]
 
   return (
@@ -140,6 +142,7 @@ export default function CatProfilePage() {
         {activeTab === 'weight' && <WeightTab catId={cat.id} weightLogs={weightLogs} setWeightLogs={setWeightLogs} />}
         {activeTab === 'medical' && <MedicalTab catId={cat.id} records={medicalRecords} setRecords={setMedicalRecords} />}
         {activeTab === 'memories' && <MemoriesTab catId={cat.id} />}
+        {activeTab === 'sitter' && <SitterBookingTab catId={cat.id} />}
       </div>
     </div>
   )
