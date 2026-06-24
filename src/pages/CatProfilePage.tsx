@@ -2,20 +2,24 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import type { Cat, Vaccination, WeightLog, MedicalRecord } from '../lib/types'
-import { ArrowLeft, Syringe, Weight, Stethoscope, Heart, AlertCircle, Home } from 'lucide-react'
+import { useRef, useState as useLocalState } from 'react'
+import { ArrowLeft, Syringe, Weight, Stethoscope, Heart, AlertCircle, Home, Utensils, Camera, Loader } from 'lucide-react'
 import VaccinationTab from '../components/cat/VaccinationTab'
 import WeightTab from '../components/cat/WeightTab'
 import MedicalTab from '../components/cat/MedicalTab'
 import MemoriesTab from '../components/cat/MemoriesTab'
 import SitterBookingTab from '../components/cat/SitterBookingTab'
+import NutritionTab from '../components/cat/NutritionTab'
 
-type Tab = 'overview' | 'vaccine' | 'weight' | 'medical' | 'memories' | 'sitter'
+type Tab = 'overview' | 'vaccine' | 'weight' | 'medical' | 'nutrition' | 'memories' | 'sitter'
 
 export default function CatProfilePage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const [cat, setCat] = useState<Cat | null>(null)
   const [activeTab, setActiveTab] = useState<Tab>('overview')
+  const [avatarUploading, setAvatarUploading] = useLocalState(false)
+  const avatarFileRef = useRef<HTMLInputElement>(null)
   const [vaccinations, setVaccinations] = useState<Vaccination[]>([])
   const [weightLogs, setWeightLogs] = useState<WeightLog[]>([])
   const [medicalRecords, setMedicalRecords] = useState<MedicalRecord[]>([])
@@ -46,16 +50,33 @@ export default function CatProfilePage() {
 
   const overdueVaccines = vaccinations.filter(v => v.next_due && new Date(v.next_due) < new Date())
 
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file || !cat) return
+    setAvatarUploading(true)
+    const { data: { user } } = await supabase.auth.getUser()
+    const ext = file.name.split('.').pop() ?? 'jpg'
+    const path = `${user!.id}/${cat.id}.${ext}`
+    const { error } = await supabase.storage.from('cat-photos').upload(path, file, { upsert: true })
+    if (!error) {
+      const { data } = supabase.storage.from('cat-photos').getPublicUrl(path)
+      await supabase.from('cats').update({ avatar_url: data.publicUrl }).eq('id', cat.id)
+      setCat(prev => prev ? { ...prev, avatar_url: data.publicUrl } : prev)
+    }
+    setAvatarUploading(false)
+  }
+
   if (loading) return <div className="flex justify-center py-20"><div className="w-8 h-8 border-4 border-brand-teal border-t-transparent rounded-full animate-spin" /></div>
   if (!cat) return <div className="text-center py-20 text-brand-charcoal/50 font-bold">Không tìm thấy hồ sơ mèo</div>
 
   const tabs: { id: Tab; label: string; icon: React.ReactNode; count?: number }[] = [
-    { id: 'overview', label: 'Tổng quan', icon: <Heart className="w-3.5 h-3.5" /> },
-    { id: 'vaccine', label: 'Tiêm chủng', icon: <Syringe className="w-3.5 h-3.5" />, count: overdueVaccines.length },
-    { id: 'weight', label: 'Cân nặng', icon: <Weight className="w-3.5 h-3.5" /> },
-    { id: 'medical', label: 'Bệnh sử', icon: <Stethoscope className="w-3.5 h-3.5" /> },
-    { id: 'memories', label: 'Kỷ niệm', icon: <Heart className="w-3.5 h-3.5" /> },
-    { id: 'sitter', label: 'Kæt Sitter', icon: <Home className="w-3.5 h-3.5" /> },
+    { id: 'overview',   label: 'Tổng quan',   icon: <Heart className="w-3.5 h-3.5" /> },
+    { id: 'vaccine',    label: 'Tiêm chủng',  icon: <Syringe className="w-3.5 h-3.5" />, count: overdueVaccines.length },
+    { id: 'weight',     label: 'Cân nặng',    icon: <Weight className="w-3.5 h-3.5" /> },
+    { id: 'nutrition',  label: 'Dinh dưỡng',  icon: <Utensils className="w-3.5 h-3.5" /> },
+    { id: 'medical',    label: 'Bệnh sử',     icon: <Stethoscope className="w-3.5 h-3.5" /> },
+    { id: 'memories',   label: 'Kỷ niệm',    icon: <Heart className="w-3.5 h-3.5" /> },
+    { id: 'sitter',     label: 'Kæt Sitter',  icon: <Home className="w-3.5 h-3.5" /> },
   ]
 
   return (
@@ -67,13 +88,21 @@ export default function CatProfilePage() {
         </button>
 
         <div className="flex-1 flex items-start gap-4">
-          <div className="w-16 h-16 rounded-2xl overflow-hidden bg-brand-teal/10 border-2 border-brand-charcoal/8 flex-shrink-0">
+          <input ref={avatarFileRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarUpload} />
+          <button
+            type="button"
+            onClick={() => avatarFileRef.current?.click()}
+            className="w-16 h-16 rounded-2xl overflow-hidden bg-brand-teal/10 border-2 border-brand-charcoal/8 flex-shrink-0 relative group cursor-pointer"
+          >
             {cat.avatar_url ? (
               <img src={cat.avatar_url} alt={cat.name} className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-2xl">🐱</div>
             )}
-          </div>
+            <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              {avatarUploading ? <Loader className="w-4 h-4 text-white animate-spin" /> : <Camera className="w-4 h-4 text-white" />}
+            </div>
+          </button>
           <div>
             <h1 className="text-xl font-black text-brand-charcoal">{cat.name}</h1>
             {cat.nickname && <p className="text-xs text-brand-charcoal/50 font-semibold">"{cat.nickname}"</p>}
@@ -138,11 +167,12 @@ export default function CatProfilePage() {
             )}
           </div>
         )}
-        {activeTab === 'vaccine' && <VaccinationTab catId={cat.id} vaccinations={vaccinations} setVaccinations={setVaccinations} />}
-        {activeTab === 'weight' && <WeightTab catId={cat.id} weightLogs={weightLogs} setWeightLogs={setWeightLogs} />}
-        {activeTab === 'medical' && <MedicalTab catId={cat.id} records={medicalRecords} setRecords={setMedicalRecords} />}
-        {activeTab === 'memories' && <MemoriesTab catId={cat.id} />}
-        {activeTab === 'sitter' && <SitterBookingTab catId={cat.id} />}
+        {activeTab === 'vaccine'   && <VaccinationTab catId={cat.id} vaccinations={vaccinations} setVaccinations={setVaccinations} />}
+        {activeTab === 'weight'    && <WeightTab catId={cat.id} weightLogs={weightLogs} setWeightLogs={setWeightLogs} />}
+        {activeTab === 'nutrition' && <NutritionTab catId={cat.id} />}
+        {activeTab === 'medical'   && <MedicalTab catId={cat.id} records={medicalRecords} setRecords={setMedicalRecords} />}
+        {activeTab === 'memories'  && <MemoriesTab catId={cat.id} />}
+        {activeTab === 'sitter'    && <SitterBookingTab catId={cat.id} />}
       </div>
     </div>
   )

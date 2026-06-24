@@ -60,6 +60,37 @@ export interface Memory {
   created_at: string
 }
 
+export interface FoodLog {
+  id: string
+  cat_id: string
+  owner_id: string
+  type: 'dry' | 'wet' | 'snack' | 'supplement' | 'other'
+  brand?: string
+  name: string
+  amount_per_day?: string
+  feeding_times_per_day?: number
+  notes?: string
+  started_at?: string
+  ended_at?: string
+  is_current: boolean
+  created_at: string
+}
+
+export interface MedicineLog {
+  id: string
+  cat_id: string
+  owner_id: string
+  name: string
+  purpose?: 'deworming' | 'flea' | 'supplement' | 'prescribed' | 'other'
+  dosage?: string
+  frequency?: 'daily' | 'weekly' | 'monthly' | 'as_needed' | 'once'
+  started_at?: string
+  ended_at?: string
+  is_current: boolean
+  notes?: string
+  created_at: string
+}
+
 export interface Profile {
   id: string
   display_name?: string
