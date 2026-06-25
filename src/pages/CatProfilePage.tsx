@@ -172,7 +172,7 @@ export default function CatProfilePage() {
         {activeTab === 'nutrition' && <NutritionTab catId={cat.id} />}
         {activeTab === 'medical'   && <MedicalTab catId={cat.id} records={medicalRecords} setRecords={setMedicalRecords} />}
         {activeTab === 'memories'  && <MemoriesTab catId={cat.id} />}
-        {activeTab === 'sitter'    && <SitterBookingTab catId={cat.id} />}
+        {activeTab === 'sitter'    && <SitterBookingTab catId={cat.id} catName={cat.name} />}
       </div>
     </div>
   )

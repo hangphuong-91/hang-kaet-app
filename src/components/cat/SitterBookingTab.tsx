@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import emailjs from '@emailjs/browser'
 import { supabase } from '../../lib/supabase'
 import type { SitterBooking } from '../../lib/types'
 import { Home, Calendar, Clock, ChevronDown, ChevronUp, Plus, X, Send, ExternalLink } from 'lucide-react'
@@ -31,11 +32,12 @@ function addDays(date: string, n: number) {
 
 interface BookingFormProps {
   catId: string
+  catName: string
   onClose: () => void
   onSaved: (b: SitterBooking) => void
 }
 
-function BookingForm({ catId, onClose, onSaved }: BookingFormProps) {
+function BookingForm({ catId, catName, onClose, onSaved }: BookingFormProps) {
   const [startDate, setStartDate] = useState(addDays(today(), 3))
   const [endDate, setEndDate] = useState(addDays(today(), 6))
   const [notes, setNotes] = useState('')
@@ -43,6 +45,26 @@ function BookingForm({ catId, onClose, onSaved }: BookingFormProps) {
   const [err, setErr] = useState<string | null>(null)
 
   const inputCls = 'w-full bg-[#FAF7F2] border-2 border-[#33333315] rounded-xl px-3 py-2.5 text-sm font-semibold text-[#333] focus:outline-none focus:border-[#0E676B] transition-colors'
+
+  const sendEmail = async (ownerEmail: string, booking: SitterBooking) => {
+    const svcId  = import.meta.env.VITE_EMAILJS_SERVICE_ID  as string
+    const tplId  = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string
+    const pubKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY  as string
+    if (!svcId || !tplId || !pubKey) return
+    try {
+      await emailjs.send(svcId, tplId, {
+        cat_name:     catName,
+        owner_email:  ownerEmail,
+        start_date:   new Date(booking.start_date).toLocaleDateString('vi-VN'),
+        end_date:     new Date(booking.end_date).toLocaleDateString('vi-VN'),
+        days:         diffDays(booking.start_date, booking.end_date),
+        notes:        booking.notes ?? '(không có ghi chú)',
+        submitted_at: new Date().toLocaleString('vi-VN'),
+      }, pubKey)
+    } catch (e) {
+      console.warn('[sitter] email notification failed:', e)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -72,6 +94,7 @@ function BookingForm({ catId, onClose, onSaved }: BookingFormProps) {
       return
     }
 
+    sendEmail(user.email ?? 'unknown', data as SitterBooking)
     onSaved(data as SitterBooking)
   }
 
@@ -162,7 +185,7 @@ function BookingForm({ catId, onClose, onSaved }: BookingFormProps) {
   )
 }
 
-export default function SitterBookingTab({ catId }: { catId: string }) {
+export default function SitterBookingTab({ catId, catName }: { catId: string; catName: string }) {
   const [bookings, setBookings] = useState<SitterBooking[]>([])
   const [loading, setLoading] = useState(true)
   const [expanded, setExpanded] = useState<string | null>(null)
@@ -193,7 +216,7 @@ export default function SitterBookingTab({ catId }: { catId: string }) {
 
   return (
     <>
-      {showForm && <BookingForm catId={catId} onClose={() => setShowForm(false)} onSaved={handleSaved} />}
+      {showForm && <BookingForm catId={catId} catName={catName} onClose={() => setShowForm(false)} onSaved={handleSaved} />}
 
       {bookings.length === 0 ? (
         <div className="text-center py-16 space-y-4">
