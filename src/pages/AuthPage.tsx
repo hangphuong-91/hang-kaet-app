@@ -53,7 +53,7 @@ const TC_SECTIONS = [
   },
   {
     title: '9. Liên hệ',
-    body: 'Mọi thắc mắc về dữ liệu cá nhân, yêu cầu xóa tài khoản hoặc phản ánh vi phạm: ngph.hang@gmail.com | hangkaet.net',
+    body: 'Mọi thắc mắc về dữ liệu cá nhân, yêu cầu xóa tài khoản hoặc phản ánh vi phạm: hangkaet@gmail.com | hangkaet.net',
   },
 ]
 
