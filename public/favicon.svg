@@ -1,40 +1,41 @@
 <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Back glowing dashed aura -->
-  <circle cx="50" cy="50" r="45" fill="#FAF6EE" stroke="#523A28" stroke-width="1.5" stroke-dasharray="3 3" />
+  <!-- Solid teal background -->
+  <rect width="100" height="100" rx="22" fill="#0E676B"/>
 
-  <!-- Scholarly mini graduation hat -->
-  <path d="M 40 18 L 56 12 L 72 18 L 56 24 Z" fill="#0E676B" stroke="#523A28" stroke-width="1.5" />
-  <rect x="52" y="21" width="8" height="3" fill="#E17272" />
-  <path d="M 68 19 L 74 27" stroke="#523A28" stroke-width="1.5" stroke-linecap="round" />
+  <!-- Left ear -->
+  <path d="M 18 48 L 8 22 L 38 36 Z" fill="#FAF6EE"/>
+  <path d="M 20 44 L 13 26 L 34 36 Z" fill="#E17272"/>
 
-  <!-- Left Pointy Ear -->
-  <path d="M 24 35 L 10 14 L 38 24 Z" fill="#FAF6EE" stroke="#523A28" stroke-width="2" />
-  <path d="M 22 31 L 14 18 L 32 24 Z" fill="#E17272" opacity="0.8" />
+  <!-- Right ear -->
+  <path d="M 82 48 L 92 22 L 62 36 Z" fill="#FAF6EE"/>
+  <path d="M 80 44 L 87 26 L 66 36 Z" fill="#E17272"/>
 
-  <!-- Right Pointy Ear -->
-  <path d="M 76 35 L 90 14 L 62 24 Z" fill="#FAF6EE" stroke="#523A28" stroke-width="2" />
-  <path d="M 78 31 L 86 18 L 68 24 Z" fill="#E17272" opacity="0.8" />
+  <!-- Cat head -->
+  <circle cx="50" cy="62" r="30" fill="#FAF6EE"/>
 
-  <!-- Cat Head Base -->
-  <circle cx="50" cy="54" r="28" fill="#FAF6EE" stroke="#523A28" stroke-width="2.5" />
+  <!-- Eyes -->
+  <circle cx="37" cy="57" r="5.5" fill="#0E676B"/>
+  <circle cx="35" cy="55" r="2" fill="#FFFFFF"/>
+  <circle cx="38.5" cy="58.5" r="0.8" fill="#FFFFFF"/>
 
-  <!-- Glossy eyes -->
-  <circle cx="36" cy="50" r="5" fill="#523A28" />
-  <circle cx="34" cy="48" r="1.8" fill="#FFFFFF" />
-  <circle cx="37" cy="51" r="0.7" fill="#FFFFFF" />
-
-  <circle cx="64" cy="50" r="5" fill="#523A28" />
-  <circle cx="62" cy="48" r="1.8" fill="#FFFFFF" />
-  <circle cx="65" cy="51" r="0.7" fill="#FFFFFF" />
+  <circle cx="63" cy="57" r="5.5" fill="#0E676B"/>
+  <circle cx="61" cy="55" r="2" fill="#FFFFFF"/>
+  <circle cx="64.5" cy="58.5" r="0.8" fill="#FFFFFF"/>
 
   <!-- Blush -->
-  <circle cx="28" cy="58" r="4.5" fill="#E17272" fill-opacity="0.6" />
-  <circle cx="72" cy="58" r="4.5" fill="#E17272" fill-opacity="0.6" />
+  <circle cx="27" cy="66" r="5" fill="#E17272" fill-opacity="0.55"/>
+  <circle cx="73" cy="66" r="5" fill="#E17272" fill-opacity="0.55"/>
 
-  <!-- Nose and smile -->
-  <path d="M 50 54 L 47 51 C 45 49, 55 49, 53 51 Z" fill="#E17272" />
-  <path d="M 44 57 C 47 60, 50 60, 50 57 C 50 60, 53 60, 56 57" stroke="#523A28" stroke-width="2" stroke-linecap="round" fill="none" />
+  <!-- Nose -->
+  <path d="M 50 63 L 47 60 C 45 58, 55 58, 53 60 Z" fill="#E17272"/>
 
-  <!-- Whiskers -->
-  <path d="M 14 56 L 2 55 M 13 61 L 0 62 M 86 56 L 98 55 M 87 61 L 100 62" stroke="#523A28" stroke-width="1.8" stroke-linecap="round" opacity="0.8" />
+  <!-- Smile -->
+  <path d="M 44 66 C 47 70, 50 70, 50 66 C 50 70, 53 70, 56 66" stroke="#523A28" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+
+  <!-- Grad hat brim -->
+  <path d="M 36 26 L 50 20 L 64 26 L 50 32 Z" fill="#F2B94B"/>
+  <!-- Hat board -->
+  <rect x="46" y="28" width="8" height="4" rx="1" fill="#E17272"/>
+  <!-- Tassel string -->
+  <path d="M 62 27 L 68 35" stroke="#F2B94B" stroke-width="2" stroke-linecap="round"/>
 </svg>
